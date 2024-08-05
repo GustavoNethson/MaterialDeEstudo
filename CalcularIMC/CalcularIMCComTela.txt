@@ -1,0 +1,91 @@
+import java.util.Scanner;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+
+public class ExemploTela {
+
+    public static void createAndShowGUI(double doAltura, double doPeso, String stSexo) {
+        double doValorAltura = (doAltura / 100.0) * (doAltura / 100.0); 
+        double doValImc = doPeso / doValorAltura;
+        String stResultado;
+        String stSexoExtenco;
+
+        if(stSexo.equalsIgnoreCase("M")) {
+            stSexoExtenco = "Masculino";
+            if (doValImc < 20.7) {
+                stResultado = "Abaixo do peso";
+            } else if (doValImc < 26.4) {
+                stResultado = "Peso normal";
+            } else if (doValImc < 27.8) {
+                stResultado = "Marginalmente acima do peso";
+            } else if (doValImc < 31.1) {
+                stResultado = "Acima do peso ideal";
+            } else {
+                stResultado = "Obeso";
+            }
+        } else if (stSexo.equalsIgnoreCase("F")) {
+            stSexoExtenco = "Feminino";
+            if (doValImc < 19.1) {
+                stResultado = "Abaixo do peso";
+            } else if (doValImc < 25.8) {
+                stResultado = "Peso normal";
+            } else if (doValImc < 27.3) {
+                stResultado = "Marginalmente acima do peso";
+            } else if (doValImc < 32.3) {
+                stResultado = "Acima do peso ideal";
+            } else {
+                stResultado = "Obesa";
+            }
+        } else {
+            stResultado = "Valor do sexo informado é invalido!";
+            stSexoExtenco = "Valor não existente";
+        }
+
+        // Cria o frame (janela)
+        JFrame frame = new JFrame("Calcular IMC");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Cria um painel com GridLayout para organizar os rótulos
+        JPanel panel = new JPanel(new GridLayout(3, 1));
+        panel.add(new JLabel("IMC: " + String.format("%.2f", doValImc)));
+        panel.add(new JLabel("Resultado: " + stResultado));
+        panel.add(new JLabel("Sexo: " + stSexoExtenco));
+
+        frame.getContentPane().add(panel);
+
+        // Define o tamanho da janela
+        frame.setSize(300, 200);
+
+        // Centraliza a janela na tela
+        frame.setLocationRelativeTo(null);
+
+        // Torna a janela visível
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Informe sua altura em cm: ");
+        double doAltura = scanner.nextDouble();
+
+        System.out.print("Informe seu peso em kg: ");  
+        double doPeso = scanner.nextDouble();
+
+        System.out.println("Informe o seu Sexo: ");
+        System.out.println("Sendo (M) para Masculino e (F) para Feminino");
+        String stSexo = scanner.next();
+
+        scanner.close();
+
+        // Garante que a criação e a exibição da GUI ocorram na thread de despacho de eventos
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI(doAltura, doPeso, stSexo);
+            }
+        });
+    }
+}
